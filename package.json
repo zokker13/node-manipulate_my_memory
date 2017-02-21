@@ -1,0 +1,27 @@
+{
+  "name": "node-manipulate_my_memory",
+  "version": "0.1.0",
+  "description": "Manipulate your memory in your OS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zokker13/node-manipulate_my_memory.git"
+  },
+  "keywords": [
+    "memory",
+    "readprocessmemory",
+    "manipulation",
+    "winapi",
+    "writeprocessmemory",
+    "openprocess"
+  ],
+  "author": "Philipp Tusch <zokker13@posteo.de>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zokker13/node-manipulate_my_memory/issues"
+  },
+  "homepage": "https://github.com/zokker13/node-manipulate_my_memory#readme"
+}
