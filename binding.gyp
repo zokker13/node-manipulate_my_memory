@@ -3,7 +3,9 @@
         {
             "target_name": "NativeExtension",
             "sources": [
-                "src/native.cc"
+                "src/main.cc",
+                "src/windows_extension.cc",
+                "src/windows_extension.h"
             ],
             "include_dirs" : [
                 "<!(node -e \"require('nan')\")"
