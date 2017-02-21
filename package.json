@@ -23,5 +23,10 @@
   "bugs": {
     "url": "https://github.com/zokker13/node-manipulate_my_memory/issues"
   },
-  "homepage": "https://github.com/zokker13/node-manipulate_my_memory#readme"
+  "homepage": "https://github.com/zokker13/node-manipulate_my_memory#readme",
+  "dependencies": {
+    "bindings": "^1.2.1",
+    "nan": "^2.5.1"
+  },
+  "gypfile": true
 }
