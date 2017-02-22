@@ -22,19 +22,17 @@ using Nan::To;
 #ifndef WINDOWS_EXTENSION_H_
 #define WINDOWS_EXTENSION_H_
 
-void ExReadProcessMemory(const Nan::FunctionCallbackInfo<v8::Value>& info);
-void ExCloseHandle(const Nan::FunctionCallbackInfo<v8::Value>& info);
+void _ExReadProcessMemory(const Nan::FunctionCallbackInfo<v8::Value>& info);
 
 NAN_METHOD(ExOpenProcess);
 NAN_METHOD(ExCloseHandle);
+NAN_METHOD(ExReadProcessMemory);
 
 class CExOpenProcess : public AsyncWorker
 {
 public:
   CExOpenProcess(Callback *callback, DWORD dwDesiredAccess, BOOL bInheritHandle, DWORD dwProcessId);
-
   void Execute();
-
   void HandleOKCallback();
 
 private:
@@ -48,14 +46,30 @@ class CExCloseHandle : public AsyncWorker
 {
 public:
   CExCloseHandle(Callback *callback, HANDLE hProcess);
-
   void Execute();
-
   void HandleOKCallback();
 
 private:
   BOOL bSuccess;
   HANDLE hProcess;
+};
+
+class CExReadProcessMemory : public AsyncWorker
+{
+public:
+  CExReadProcessMemory(Callback* callback, HANDLE hProcess, LPCVOID lpBaseAddress, SIZE_T nSize);
+  ~CExReadProcessMemory();
+  void Execute();
+  void HandleOKCallback();
+
+private:
+  HANDLE hProcess;
+  LPCVOID lpBaseAddress;
+  char *cpBuffer;
+  SIZE_T nSize;
+  unsigned __int64 uiNumberOfBytesRead;
+  BOOL bSuccess;
+  
 };
 
 #endif

@@ -1,6 +1,6 @@
 #include "windows_extension.h"
 
-void ExReadProcessMemory(const Nan::FunctionCallbackInfo<v8::Value>& info)
+void _ExReadProcessMemory(const Nan::FunctionCallbackInfo<v8::Value>& info)
 {
   if (info.Length() != 3)
   {
@@ -82,6 +82,57 @@ void CExCloseHandle::HandleOKCallback()
   callback->Call(2, argv);
 }
 
+CExReadProcessMemory::CExReadProcessMemory(Callback* callback, HANDLE hProcess, LPCVOID lpBaseAddress, SIZE_T nSize)
+  : AsyncWorker(callback)
+  , hProcess(hProcess)
+  , lpBaseAddress(lpBaseAddress)
+  , nSize(nSize)
+  , cpBuffer(new char[nSize])
+  , uiNumberOfBytesRead(0)
+  , bSuccess(false)
+{
+
+}
+
+CExReadProcessMemory::~CExReadProcessMemory()
+{
+  delete[] cpBuffer;
+}
+
+void CExReadProcessMemory::Execute()
+{
+  cout << "hProcess: " << hProcess << endl;
+  cout << "lpBaseAddress: " << lpBaseAddress << endl;
+  cout << "nSize: " << nSize << endl;
+  bSuccess = ReadProcessMemory(hProcess, lpBaseAddress, cpBuffer, nSize, &uiNumberOfBytesRead);
+  cout << "bSuccess: " << bSuccess << endl;
+}
+
+void CExReadProcessMemory::HandleOKCallback()
+{
+  HandleScope scope;
+  v8::Isolate *isolate = v8::Isolate::GetCurrent();
+
+  cout << "uiNumberOfBytesRead: " << uiNumberOfBytesRead << endl;
+  Local<v8::Array> arr = v8::Array::New(isolate, uiNumberOfBytesRead);
+  for (int i = 0; i < 4; i++)
+  {
+    cout << "See: [" << i << "]" << endl;
+    arr->Set(i, v8::Integer::New(isolate, cpBuffer[i]));
+  }
+
+  Local<Value> argv[] = {
+    Null()
+    , New<Boolean>(bSuccess)
+    , New<v8::Integer>(int(uiNumberOfBytesRead))
+    , arr
+  };
+
+  callback->Call(4, argv);
+}
+
+
+
 NAN_METHOD(ExOpenProcess)
 {
   Callback *cb = new Callback(info[3].As<Function>());
@@ -94,4 +145,11 @@ NAN_METHOD(ExCloseHandle)
   Callback *cb = new Callback(info[1].As<Function>());
 
   AsyncQueueWorker(new CExCloseHandle(cb, HANDLE(int(info[0]->NumberValue()))));
+}
+
+NAN_METHOD(ExReadProcessMemory)
+{
+  Callback *cb = new Callback(info[3].As<Function>());
+
+  AsyncQueueWorker(new CExReadProcessMemory(cb, HANDLE(int(info[0]->IntegerValue())), reinterpret_cast<void *>(info[1]->IntegerValue()), static_cast<SIZE_T>(info[2]->IntegerValue())));
 }

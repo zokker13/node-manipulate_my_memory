@@ -14,6 +14,8 @@ NAN_MODULE_INIT(InitAll)
     GetFunction(New<FunctionTemplate>(ExOpenProcess)).ToLocalChecked());
   Set(target, New<String>("closeHandle").ToLocalChecked(),
     GetFunction(New<FunctionTemplate>(ExCloseHandle)).ToLocalChecked());
+  Set(target, New<String>("readProcessMemory").ToLocalChecked(),
+    GetFunction(New<FunctionTemplate>(ExReadProcessMemory)).ToLocalChecked());
 }
 
 NODE_MODULE(fuck, InitAll)
