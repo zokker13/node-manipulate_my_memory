@@ -28,6 +28,7 @@
   },
   "homepage": "https://github.com/zokker13/node-manipulate_my_memory#readme",
   "dependencies": {
+    "async": "^2.1.5",
     "bindings": "^1.2.1",
     "nan": "^2.5.1"
   },

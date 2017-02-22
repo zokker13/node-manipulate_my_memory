@@ -1,15 +1,19 @@
 #include "windows_extension.h"
 
-void Init(v8::Local<v8::Object> exports) {
+using v8::FunctionTemplate;
+using v8::Handle;
+using v8::Object;
+using v8::String;
+using Nan::GetFunction;
+using Nan::New;
+using Nan::Set;
 
-  exports->Set(Nan::New("openProcess").ToLocalChecked(),
-    Nan::New<v8::FunctionTemplate>(ExOpenProcess)->GetFunction());
-
-  exports->Set(Nan::New("closeHandle").ToLocalChecked(),
-    Nan::New<v8::FunctionTemplate>(ExCloseHandle)->GetFunction());
-
-  exports->Set(Nan::New("readProcessMemory").ToLocalChecked(),
-    Nan::New<v8::FunctionTemplate>(ExReadProcessMemory)->GetFunction());
+NAN_MODULE_INIT(InitAll)
+{
+  Set(target, New<String>("openProcess").ToLocalChecked(),
+    GetFunction(New<FunctionTemplate>(ExOpenProcess)).ToLocalChecked());
+  Set(target, New<String>("closeHandle").ToLocalChecked(),
+    GetFunction(New<FunctionTemplate>(ExCloseHandle)).ToLocalChecked());
 }
 
-NODE_MODULE(fuck, Init)
+NODE_MODULE(fuck, InitAll)

@@ -38,52 +38,60 @@ void ExReadProcessMemory(const Nan::FunctionCallbackInfo<v8::Value>& info)
   info.GetReturnValue().Set(Nan::New((int)value)->ToInteger());
 }
 
-void ExOpenProcess(const Nan::FunctionCallbackInfo<v8::Value>& info) {
+CExOpenProcess::CExOpenProcess(Callback* callback, DWORD dwDesiredAccess, BOOL bInheritHandle, DWORD dwProcessId) : AsyncWorker(callback), dwDesiredAccess(dwDesiredAccess), bInheritHandle(bInheritHandle), dwProcessId(dwProcessId), hOpenProcess(nullptr)
+{
 
-  if (info.Length() != 3)
-  {
-    Nan::ThrowTypeError("Wrong Number of Arguments");
-    return;
-  }
-
-  if (!info[0]->IsNumber())
-  {
-    Nan::ThrowTypeError("Type of argument \"dwDesiredAccess\" must be positive number");
-    return;
-  }
-
-  if (!info[1]->IsBoolean())
-  {
-    Nan::ThrowTypeError("Type of argument \"bInheritHandle\" must be boolean");
-    return;
-  }
-
-  if (!info[2]->IsNumber())
-  {
-    Nan::ThrowTypeError("Type of argument \"dwProcessId\" must be positive number");
-    return;
-  }
-
-  HANDLE processHandle = OpenProcess(info[0]->NumberValue(), info[1]->BooleanValue(), info[2]->NumberValue());
-
-  info.GetReturnValue().Set(Nan::New((int)processHandle)->NumberValue());
 }
 
-void ExCloseHandle(const Nan::FunctionCallbackInfo<v8::Value>& info) {
+void CExOpenProcess::Execute()
+{
+  hOpenProcess = OpenProcess(dwDesiredAccess, bInheritHandle, dwProcessId);
+}
 
-  if (info.Length() != 1)
-  {
-    Nan::ThrowTypeError("Wrong Number of Arguments");
-    return;
-  }
+void CExOpenProcess::HandleOKCallback()
+{
+  HandleScope scope;
 
-  if (!info[0]->IsNumber())
-  {
-    Nan::ThrowTypeError("Type of argument \"hObject\" must be positive number");
-    return;
-  }
+  Local<Value> argv[] = {
+    Null()
+    , New<Number>(int(hOpenProcess))
+  };
 
-  BOOL success = CloseHandle(HANDLE(info[0]->IntegerValue()));
+  callback->Call(2, argv);
+}
 
-  info.GetReturnValue().Set(Nan::New((bool)success)->ToBoolean());
+CExCloseHandle::CExCloseHandle(Callback* callback, HANDLE hProcess) : AsyncWorker(callback), hProcess(hProcess), bSuccess(false)
+{
+
+}
+
+void CExCloseHandle::Execute()
+{
+  bSuccess = CloseHandle(hProcess);
+}
+
+void CExCloseHandle::HandleOKCallback()
+{
+  HandleScope scope;
+
+  Local<Value> argv[] = {
+    Null()
+    , New<Boolean>(bSuccess)
+  };
+
+  callback->Call(2, argv);
+}
+
+NAN_METHOD(ExOpenProcess)
+{
+  Callback *cb = new Callback(info[3].As<Function>());
+
+  AsyncQueueWorker(new CExOpenProcess(cb, info[0]->NumberValue(), info[1]->BooleanValue(), info[2]->NumberValue()));
+}
+
+NAN_METHOD(ExCloseHandle)
+{
+  Callback *cb = new Callback(info[1].As<Function>());
+
+  AsyncQueueWorker(new CExCloseHandle(cb, HANDLE(int(info[0]->NumberValue()))));
 }
