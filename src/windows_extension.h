@@ -6,6 +6,7 @@
 
 using namespace std;
 
+using v8::ArrayBuffer;
 using v8::Function;
 using v8::Local;
 using v8::Number;

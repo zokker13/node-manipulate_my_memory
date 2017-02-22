@@ -1,7 +1,7 @@
 {
     "targets": [
         {
-            "target_name": "NativeExtension",
+            "target_name": "ManipulateMyMemory",
             "sources": [
                 "src/main.cc",
                 "src/windows_extension.cc",

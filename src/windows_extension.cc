@@ -96,16 +96,13 @@ CExReadProcessMemory::CExReadProcessMemory(Callback* callback, HANDLE hProcess, 
 
 CExReadProcessMemory::~CExReadProcessMemory()
 {
+  cout << "DELETED THE DATA" << endl;
   delete[] cpBuffer;
 }
 
 void CExReadProcessMemory::Execute()
 {
-  cout << "hProcess: " << hProcess << endl;
-  cout << "lpBaseAddress: " << lpBaseAddress << endl;
-  cout << "nSize: " << nSize << endl;
   bSuccess = ReadProcessMemory(hProcess, lpBaseAddress, cpBuffer, nSize, &uiNumberOfBytesRead);
-  cout << "bSuccess: " << bSuccess << endl;
 }
 
 void CExReadProcessMemory::HandleOKCallback()
@@ -113,22 +110,20 @@ void CExReadProcessMemory::HandleOKCallback()
   HandleScope scope;
   v8::Isolate *isolate = v8::Isolate::GetCurrent();
 
-  cout << "uiNumberOfBytesRead: " << uiNumberOfBytesRead << endl;
-  Local<v8::Array> arr = v8::Array::New(isolate, uiNumberOfBytesRead);
+  Local<ArrayBuffer> buf = Local<ArrayBuffer>::New(isolate, ArrayBuffer::New(isolate, uiNumberOfBytesRead));
+  Local<v8::Uint8Array> uarr = v8::Uint8Array::New(buf, 0, uiNumberOfBytesRead);
   for (int i = 0; i < 4; i++)
   {
-    cout << "See: [" << i << "]" << endl;
-    arr->Set(i, v8::Integer::New(isolate, cpBuffer[i]));
+    uarr->Set(i, v8::Integer::New(isolate, cpBuffer[i]));
   }
 
   Local<Value> argv[] = {
     Null()
     , New<Boolean>(bSuccess)
-    , New<v8::Integer>(int(uiNumberOfBytesRead))
-    , arr
+    , uarr
   };
 
-  callback->Call(4, argv);
+  callback->Call(3, argv);
 }
 
 
