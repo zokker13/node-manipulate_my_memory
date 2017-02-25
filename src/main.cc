@@ -26,6 +26,10 @@ NAN_MODULE_INIT(InitAll)
     GetFunction(New<FunctionTemplate>(NanWin32FindWindow)).ToLocalChecked());
   Set(target, New<String>("findWindowSync").ToLocalChecked(),
     GetFunction(New<FunctionTemplate>(NanWin32FindWindowSync)).ToLocalChecked());
+  Set(target, New<String>("getWindowThreadProcessId").ToLocalChecked(),
+    GetFunction(New<FunctionTemplate>(NanWin32GetWindowThreadProcessId)).ToLocalChecked());
+  Set(target, New<String>("getWindowThreadProcessIdSync").ToLocalChecked(),
+    GetFunction(New<FunctionTemplate>(NanWin32GetWindowThreadProcessIdSync)).ToLocalChecked());
 }
 
 NODE_MODULE(fuck, InitAll)
