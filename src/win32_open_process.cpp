@@ -48,3 +48,17 @@ void Win32OpenProcess::HandleOKCallback()
 
   callback->Call(2, argv);
 }
+
+NAN_METHOD(NanWin32OpenProcess)
+{
+  Callback *cb = new Callback(info[3].As<Function>());
+
+  AsyncQueueWorker(new Win32OpenProcess(cb, info));
+}
+
+NAN_METHOD(NanWin32OpenProcessSync)
+{
+  OpTransformation trans = OpTransformation(info);
+  trans.Exec();
+  info.GetReturnValue().Set(reinterpret_cast<int>(trans.hOpenProcess));
+}

@@ -76,3 +76,19 @@ void Win32FindWindow::HandleOKCallback()
 
   callback->Call(2, argv);
 }
+
+NAN_METHOD(NanWin32FindWindow)
+{
+  Callback *cb = new Callback(info[2].As<Function>());
+
+  AsyncQueueWorker(new Win32FindWindow(cb, info));
+}
+
+NAN_METHOD(NanWin32FindWindowSync)
+{
+  FindWindowTransformation trans = FindWindowTransformation(info);
+  trans.Exec();
+  info.GetReturnValue().Set(reinterpret_cast<int>(trans.handle));
+}
+
+

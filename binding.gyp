@@ -3,8 +3,7 @@
         {
             "target_name": "ManipulateMyMemory",
             "sources": [
-                "src/main.cc",
-                "src/windows_extension.cpp",
+                "src/main.cpp",
                 "src/win32_close_handle.cpp",
                 "src/win32_open_process.cpp",
                 "src/win32_read_process_memory.cpp",

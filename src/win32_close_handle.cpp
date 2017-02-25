@@ -43,3 +43,17 @@ void Win32CloseHandle::HandleOKCallback()
 
   callback->Call(2, argv);
 }
+
+NAN_METHOD(NanWin32CloseHandle)
+{
+  Callback *cb = new Callback(info[1].As<Function>());
+
+  AsyncQueueWorker(new Win32CloseHandle(cb, info));
+}
+
+NAN_METHOD(NanWin32CloseHandleSync)
+{
+  CloseHandleTransformation trans = CloseHandleTransformation(info);
+  trans.Exec();
+  info.GetReturnValue().Set(static_cast<bool>(trans.bSuccess));
+}

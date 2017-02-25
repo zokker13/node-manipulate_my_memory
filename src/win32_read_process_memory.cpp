@@ -67,3 +67,28 @@ void Win32ReadProcessMemory::HandleOKCallback()
 
   callback->Call(3, argv);
 }
+
+NAN_METHOD(NanWin32ReadProcessMemory)
+{
+  Callback *cb = new Callback(info[3].As<Function>());
+
+  AsyncQueueWorker(new Win32ReadProcessMemory(cb, info));
+}
+
+NAN_METHOD(NanWin32ReadProcessMemorySync)
+{
+  ReadProcessMemoryTransformation trans = ReadProcessMemoryTransformation(info);
+  trans.Exec();
+
+  HandleScope scope;
+  v8::Isolate *isolate = v8::Isolate::GetCurrent();
+
+  Local<ArrayBuffer> buf = Local<ArrayBuffer>::New(isolate, ArrayBuffer::New(isolate, trans.uiNUmberOfBytesRead));
+  Local<v8::Uint8Array> uarr = v8::Uint8Array::New(buf, 0, trans.uiNUmberOfBytesRead);
+  for (int i = 0; i < 4; i++)
+  {
+    uarr->Set(i, v8::Integer::New(isolate, trans.cpBuffer[i]));
+  }
+
+  info.GetReturnValue().Set(uarr);
+}

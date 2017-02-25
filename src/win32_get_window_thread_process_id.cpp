@@ -51,3 +51,25 @@ void Win32GetWindowThreadProcessId::HandleOKCallback()
 
   callback->Call(2, argv);
 }
+
+NAN_METHOD(NanWin32GetWindowThreadProcessId)
+{
+  Callback *cb = new Callback(info[1].As<Function>());
+
+  AsyncQueueWorker(new Win32GetWindowThreadProcessId(cb, info));
+}
+
+NAN_METHOD(NanWin32GetWindowThreadProcessIdSync)
+{
+  GetWindowThreadProcessIdTransformation trans = GetWindowThreadProcessIdTransformation(info);
+  trans.Exec();
+
+  Isolate *isolate = Isolate::GetCurrent();
+  Local<Object> obj = Object::New(isolate);
+  Local<Number> threadId = New<Number>(static_cast<unsigned __int64>(trans.dwThreadId));
+  Local<Number> processId = New<Number>(static_cast<unsigned __int64>(trans.dwProcessId));
+  obj->Set(v8::String::NewFromUtf8(isolate, "threadId"), threadId);
+  obj->Set(v8::String::NewFromUtf8(isolate, "processId"), processId);
+
+  info.GetReturnValue().Set(obj);
+}
