@@ -28,6 +28,20 @@ NAN_METHOD(NanWin32CloseHandleSync)
   info.GetReturnValue().Set(static_cast<bool>(trans.bSuccess));
 }
 
+NAN_METHOD(NanWin32FindWindow)
+{
+  Callback *cb = new Callback(info[2].As<Function>());
+
+  AsyncQueueWorker(new Win32FindWindow(cb, info));
+}
+
+NAN_METHOD(NanWin32FindWindowSync)
+{
+  FindWindowTransformation trans = FindWindowTransformation(info);
+  trans.Exec();
+  info.GetReturnValue().Set(reinterpret_cast<int>(trans.handle));
+}
+
 NAN_METHOD(NanWin32ReadProcessMemory)
 {
   Callback *cb = new Callback(info[3].As<Function>());
@@ -37,22 +51,6 @@ NAN_METHOD(NanWin32ReadProcessMemory)
 
 NAN_METHOD(NanWin32ReadProcessMemorySync)
 {
-  /*HandleScope scope;
-  v8::Isolate *isolate = v8::Isolate::GetCurrent();
-
-  Local<ArrayBuffer> buf = Local<ArrayBuffer>::New(isolate, ArrayBuffer::New(isolate, this->data.uiNUmberOfBytesRead));
-  Local<v8::Uint8Array> uarr = v8::Uint8Array::New(buf, 0, this->data.uiNUmberOfBytesRead);
-  for (int i = 0; i < 4; i++)
-  {
-    uarr->Set(i, v8::Integer::New(isolate, this->data.cpBuffer[i]));
-  }
-
-  Local<Value> argv[] = {
-    Null()
-    , New<Boolean>(this->data.bSuccess)
-    , uarr
-  };*/
-
   ReadProcessMemoryTransformation trans = ReadProcessMemoryTransformation(info);
   trans.Exec();
 
@@ -65,7 +63,6 @@ NAN_METHOD(NanWin32ReadProcessMemorySync)
   {
     uarr->Set(i, v8::Integer::New(isolate, trans.cpBuffer[i]));
   }
-
   
   info.GetReturnValue().Set(uarr);
 }

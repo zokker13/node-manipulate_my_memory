@@ -22,6 +22,10 @@ NAN_MODULE_INIT(InitAll)
     GetFunction(New<FunctionTemplate>(NanWin32ReadProcessMemory)).ToLocalChecked());
   Set(target, New<String>("readProcessMemorySync").ToLocalChecked(),
     GetFunction(New<FunctionTemplate>(NanWin32ReadProcessMemorySync)).ToLocalChecked());
+  Set(target, New<String>("findWindow").ToLocalChecked(),
+    GetFunction(New<FunctionTemplate>(NanWin32FindWindow)).ToLocalChecked());
+  Set(target, New<String>("findWindowSync").ToLocalChecked(),
+    GetFunction(New<FunctionTemplate>(NanWin32FindWindowSync)).ToLocalChecked());
 }
 
 NODE_MODULE(fuck, InitAll)
