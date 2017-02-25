@@ -20,13 +20,13 @@ void OpTransformation::Exec()
 
 void OpTransformation::FromInfo(NAN_METHOD_ARGS_TYPE info)
 {
-  this->dwDesiredAccess = info[0]->IntegerValue();
+  this->dwDesiredAccess = info[0]->Uint32Value();
   this->bInheritHandle = info[1]->BooleanValue();
-  this->dwProcessId = info[2]->IntegerValue();
+  this->dwProcessId = info[2]->Uint32Value();
   this->hOpenProcess = nullptr;
 }
 
-Win32OpenProcess::Win32OpenProcess(Callback* callback, NAN_METHOD_ARGS_TYPE info) 
+Win32OpenProcess::Win32OpenProcess(Callback* callback, NAN_METHOD_ARGS_TYPE info)
   : AsyncWorker(callback)
 {
   this->data.FromInfo(info);
@@ -43,7 +43,7 @@ void Win32OpenProcess::HandleOKCallback()
 
   Local<Value> argv[] = {
     Null()
-    , New<Number>(reinterpret_cast<int>(this->data.hOpenProcess))
+    , New<Uint32>(reinterpret_cast<unsigned int>(this->data.hOpenProcess))
   };
 
   callback->Call(2, argv);
@@ -60,5 +60,8 @@ NAN_METHOD(NanWin32OpenProcessSync)
 {
   OpTransformation trans = OpTransformation(info);
   trans.Exec();
-  info.GetReturnValue().Set(reinterpret_cast<int>(trans.hOpenProcess));
+
+
+  Local<Number> tempNumber = New<Uint32>(reinterpret_cast<unsigned int>(trans.hOpenProcess));
+  info.GetReturnValue().Set(tempNumber);
 }

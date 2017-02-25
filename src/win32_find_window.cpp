@@ -71,7 +71,7 @@ void Win32FindWindow::HandleOKCallback()
 
   Local<Value> argv[] = {
     Null()
-    , New<Number>(reinterpret_cast<int>(this->data.handle))
+    , New<Uint32>(reinterpret_cast<unsigned int>(this->data.handle))
   };
 
   callback->Call(2, argv);
@@ -88,7 +88,7 @@ NAN_METHOD(NanWin32FindWindowSync)
 {
   FindWindowTransformation trans = FindWindowTransformation(info);
   trans.Exec();
-  info.GetReturnValue().Set(reinterpret_cast<int>(trans.handle));
+  info.GetReturnValue().Set(New<Uint32>(reinterpret_cast<unsigned int>(trans.handle)));
 }
 
 

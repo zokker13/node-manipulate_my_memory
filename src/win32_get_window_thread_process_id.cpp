@@ -19,7 +19,7 @@ void GetWindowThreadProcessIdTransformation::Exec()
 
 void GetWindowThreadProcessIdTransformation::FromInfo(NAN_METHOD_ARGS_TYPE info)
 {
-  this->hWnd = reinterpret_cast<HWND>(info[0]->IntegerValue());
+  this->hWnd = reinterpret_cast<HWND>(info[0]->Uint32Value());
 }
 
 Win32GetWindowThreadProcessId::Win32GetWindowThreadProcessId(Callback* callback, NAN_METHOD_ARGS_TYPE info)
@@ -39,8 +39,8 @@ void Win32GetWindowThreadProcessId::HandleOKCallback()
 
   Isolate *isolate = Isolate::GetCurrent();
   Local<Object> obj = Object::New(isolate);
-  Local<Number> threadId = New<Number>(static_cast<unsigned __int64>(this->data.dwThreadId));
-  Local<Number> processId = New<Number>(static_cast<unsigned __int64>(this->data.dwProcessId));
+  Local<Number> threadId = New<Uint32>(static_cast<unsigned int>(this->data.dwThreadId));
+  Local<Number> processId = New<Uint32>(static_cast<unsigned int>(this->data.dwProcessId));
   obj->Set(v8::String::NewFromUtf8(isolate, "threadId"), threadId);
   obj->Set(v8::String::NewFromUtf8(isolate, "processId"), processId);
 
@@ -66,8 +66,8 @@ NAN_METHOD(NanWin32GetWindowThreadProcessIdSync)
 
   Isolate *isolate = Isolate::GetCurrent();
   Local<Object> obj = Object::New(isolate);
-  Local<Number> threadId = New<Number>(static_cast<unsigned __int64>(trans.dwThreadId));
-  Local<Number> processId = New<Number>(static_cast<unsigned __int64>(trans.dwProcessId));
+  Local<Number> threadId = New<Uint32>(static_cast<unsigned int>(trans.dwThreadId));
+  Local<Number> processId = New<Uint32>(static_cast<unsigned int>(trans.dwProcessId));
   obj->Set(v8::String::NewFromUtf8(isolate, "threadId"), threadId);
   obj->Set(v8::String::NewFromUtf8(isolate, "processId"), processId);
 

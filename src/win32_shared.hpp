@@ -17,6 +17,7 @@ using v8::Value;
 using v8::Boolean;
 using v8::Isolate;
 using v8::Object;
+using v8::Uint32;
 using Nan::NAN_METHOD_ARGS_TYPE;
 using Nan::AsyncQueueWorker;
 using Nan::AsyncWorker;

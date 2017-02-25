@@ -18,7 +18,7 @@ void CloseHandleTransformation::Exec()
 
 void CloseHandleTransformation::FromInfo(NAN_METHOD_ARGS_TYPE info)
 {
-  this->hOpenProcess = reinterpret_cast<HANDLE>(info[0]->IntegerValue());
+  this->hOpenProcess = reinterpret_cast<HANDLE>(info[0]->Uint32Value());
 }
 
 Win32CloseHandle::Win32CloseHandle(Callback* callback, NAN_METHOD_ARGS_TYPE info)
