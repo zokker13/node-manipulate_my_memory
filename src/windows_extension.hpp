@@ -11,6 +11,7 @@
 NAN_METHOD(NanWin32OpenProcess);
 NAN_METHOD(NanWin32OpenProcessSync);
 NAN_METHOD(NanWin32CloseHandle);
+NAN_METHOD(NanWin32CloseHandleSync);
 NAN_METHOD(NanWin32ReadProcessMemory);
 NAN_METHOD(NanWin32ReadProcessMemorySync);
 

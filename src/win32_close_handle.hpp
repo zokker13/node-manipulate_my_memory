@@ -3,16 +3,25 @@
 
 #include "win32_shared.hpp"
 
+struct CloseHandleTransformation
+{
+  CloseHandleTransformation();
+  CloseHandleTransformation(NAN_METHOD_ARGS_TYPE);
+  void FromInfo(NAN_METHOD_ARGS_TYPE);
+  void Exec();
+  BOOL bSuccess;
+  HANDLE hOpenProcess;
+};
+
 class Win32CloseHandle : public AsyncWorker
 {
 public:
-  Win32CloseHandle(Callback *callback, HANDLE hProcess);
+  Win32CloseHandle(Callback *callback, NAN_METHOD_ARGS_TYPE);
   void Execute();
   void HandleOKCallback();
 
 private:
-  BOOL bSuccess;
-  HANDLE hProcess;
+  CloseHandleTransformation data;
 };
 
 #endif
