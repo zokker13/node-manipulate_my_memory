@@ -3,18 +3,27 @@
 
 #include "win32_shared.hpp"
 
-class Win32OpenProcess : public AsyncWorker
+struct OpTransformation
 {
-public:
-  Win32OpenProcess(Callback *callback, DWORD dwDesiredAccess, BOOL bInheritHandle, DWORD dwProcessId);
-  void Execute();
-  void HandleOKCallback();
-
-private:
+  OpTransformation();
+  OpTransformation(NAN_METHOD_ARGS_TYPE);
+  void FromInfo(NAN_METHOD_ARGS_TYPE);
+  void Exec();
   DWORD dwDesiredAccess;
   BOOL bInheritHandle;
   DWORD dwProcessId;
   HANDLE hOpenProcess;
+};
+
+class Win32OpenProcess : public AsyncWorker
+{
+public:
+  Win32OpenProcess(Callback *callback, NAN_METHOD_ARGS_TYPE info);
+  void Execute();
+  void HandleOKCallback();
+
+private:
+  OpTransformation data;
 };
 
 

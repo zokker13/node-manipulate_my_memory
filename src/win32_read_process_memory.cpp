@@ -1,20 +1,29 @@
 #include "win32_read_process_memory.hpp"
 
-Win32ReadProcessMemory::Win32ReadProcessMemory(Callback* callback, HANDLE hProcess, LPCVOID lpBaseAddress, SIZE_T nSize)
+
+RpmTransformation::RpmTransformation(NAN_METHOD_ARGS_TYPE info)
+{
+  this->hProcess = reinterpret_cast<HANDLE>(info[0]->IntegerValue());
+  this->lpBaseAddress = reinterpret_cast<void *>(info[1]->IntegerValue());
+  this->nSize = static_cast<SIZE_T>(info[2]->IntegerValue());
+}
+
+
+
+Win32ReadProcessMemory::Win32ReadProcessMemory(Callback* callback, NAN_METHOD_ARGS_TYPE info)
   : AsyncWorker(callback)
-  , hProcess(hProcess)
-  , lpBaseAddress(lpBaseAddress)
-  , nSize(nSize)
-  , cpBuffer(new char[nSize])
   , uiNumberOfBytesRead(0)
   , bSuccess(false)
 {
-
+  RpmTransformation transformed = RpmTransformation(info);
+  this->hProcess = transformed.hProcess;
+  this->lpBaseAddress = transformed.lpBaseAddress;
+  this->nSize = transformed.nSize;
+  this->cpBuffer = new char[this->nSize];
 }
 
 Win32ReadProcessMemory::~Win32ReadProcessMemory()
 {
-  cout << "DELETED THE DATA" << endl;
   delete[] cpBuffer;
 }
 

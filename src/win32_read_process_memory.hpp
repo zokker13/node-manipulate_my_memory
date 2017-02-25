@@ -3,10 +3,21 @@
 
 #include "win32_shared.hpp"
 
+struct RpmTransformation
+{
+  RpmTransformation(NAN_METHOD_ARGS_TYPE info);
+  
+  HANDLE hProcess;
+  LPCVOID lpBaseAddress;
+  SIZE_T nSize;
+};
+
+
+
 class Win32ReadProcessMemory : public AsyncWorker
 {
 public:
-  Win32ReadProcessMemory(Callback* callback, HANDLE hProcess, LPCVOID lpBaseAddress, SIZE_T nSize);
+  Win32ReadProcessMemory(Callback* callback, NAN_METHOD_ARGS_TYPE info);
   ~Win32ReadProcessMemory();
   void Execute();
   void HandleOKCallback();

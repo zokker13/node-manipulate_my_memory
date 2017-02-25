@@ -18,7 +18,14 @@ NAN_METHOD(NanWin32OpenProcess)
 {
   Callback *cb = new Callback(info[3].As<Function>());
 
-  AsyncQueueWorker(new Win32OpenProcess(cb, info[0]->NumberValue(), info[1]->BooleanValue(), info[2]->NumberValue()));
+  AsyncQueueWorker(new Win32OpenProcess(cb, info));
+}
+
+NAN_METHOD(NanWin32OpenProcessSync)
+{
+  OpTransformation trans = OpTransformation(info);
+  trans.Exec();
+  info.GetReturnValue().Set(reinterpret_cast<int>(trans.hOpenProcess));
 }
 
 NAN_METHOD(NanWin32CloseHandle)
@@ -32,5 +39,10 @@ NAN_METHOD(NanWin32ReadProcessMemory)
 {
   Callback *cb = new Callback(info[3].As<Function>());
 
-  AsyncQueueWorker(new Win32ReadProcessMemory(cb, HANDLE(int(info[0]->IntegerValue())), reinterpret_cast<void *>(info[1]->IntegerValue()), static_cast<SIZE_T>(info[2]->IntegerValue())));
+  AsyncQueueWorker(new Win32ReadProcessMemory(cb, info));
+}
+
+NAN_METHOD(NanWin32ReadProcessMemorySync)
+{
+  
 }

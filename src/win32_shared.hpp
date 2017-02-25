@@ -15,6 +15,7 @@ using v8::Local;
 using v8::Number;
 using v8::Value;
 using v8::Boolean;
+using Nan::NAN_METHOD_ARGS_TYPE;
 using Nan::AsyncQueueWorker;
 using Nan::AsyncWorker;
 using Nan::Callback;

@@ -9,7 +9,9 @@
 #include "win32_read_process_memory.hpp"
 
 NAN_METHOD(NanWin32OpenProcess);
+NAN_METHOD(NanWin32OpenProcessSync);
 NAN_METHOD(NanWin32CloseHandle);
 NAN_METHOD(NanWin32ReadProcessMemory);
+NAN_METHOD(NanWin32ReadProcessMemorySync);
 
 #endif
