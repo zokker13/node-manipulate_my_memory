@@ -1,4 +1,4 @@
-#include "win32_get_window_thread_process_id.hpp"
+#include "get_window_thread_process_id.hpp"
 
 GetWindowThreadProcessIdTransformation::GetWindowThreadProcessIdTransformation()
 {

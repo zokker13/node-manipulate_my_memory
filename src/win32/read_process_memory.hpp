@@ -1,7 +1,7 @@
-#ifndef WIN32_READ_PROCESS_MEMORY_HPP_
-#define WIN32_READ_PROCESS_MEMORY_HPP_
+#ifndef READ_PROCESS_MEMORY_HPP_
+#define READ_PROCESS_MEMORY_HPP_
 
-#include "win32_shared.hpp"
+#include "shared.hpp"
 
 struct ReadProcessMemoryTransformation
 {

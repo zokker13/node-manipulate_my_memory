@@ -1,7 +1,7 @@
-#ifndef WIN32_FIND_WINDOW_HPP_
-#define WIN32_FIND_WINDOW_HPP_
+#ifndef FIND_WINDOW_HPP_
+#define FIND_WINDOW_HPP_
 
-#include "win32_shared.hpp"
+#include "shared.hpp"
 
 struct FindWindowTransformation
 {

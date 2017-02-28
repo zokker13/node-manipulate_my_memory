@@ -1,4 +1,4 @@
-#include "win32_find_window.hpp"
+#include "find_window.hpp"
 
 FindWindowTransformation::FindWindowTransformation()
 {
@@ -22,7 +22,7 @@ FindWindowTransformation::FindWindowTransformation(NAN_METHOD_ARGS_TYPE info)
 }
 
 void FindWindowTransformation::Exec()
-{ 
+{
   this->handle = FindWindow(this->lpClassName, this->lpWindowName);
 }
 
@@ -39,7 +39,7 @@ void FindWindowTransformation::FromInfo(NAN_METHOD_ARGS_TYPE info)
     this->lpClassName[tempStr.length()] = 0;
   }
 
-  
+
   if (info[1]->IsNull())
     this->lpWindowName = nullptr;
 
@@ -50,7 +50,7 @@ void FindWindowTransformation::FromInfo(NAN_METHOD_ARGS_TYPE info)
     memcpy(this->lpWindowName, *tempStr, tempStr.length());
     this->lpWindowName[tempStr.length()] = 0;
   }
-  
+
 
 }
 
@@ -90,5 +90,3 @@ NAN_METHOD(NanWin32FindWindowSync)
   trans.Exec();
   info.GetReturnValue().Set(New<Uint32>(reinterpret_cast<unsigned int>(trans.handle)));
 }
-
-

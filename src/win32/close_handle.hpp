@@ -1,7 +1,7 @@
-#ifndef WIN32_CLOSE_HANDLE_HPP_
-#define WIN32_CLOSE_HANDLE_HPP_
+#ifndef CLOSE_HANDLE_HPP_
+#define CLOSE_HANDLE_HPP_
 
-#include "win32_shared.hpp"
+#include "shared.hpp"
 
 struct CloseHandleTransformation
 {

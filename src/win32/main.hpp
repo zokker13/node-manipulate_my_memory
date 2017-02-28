@@ -1,14 +1,14 @@
-#ifndef WINDOWS_EXTENSION_HPP_
-#define WINDOWS_EXTENSION_HPP_
+#ifndef MAIN_HPP_
+#define MAIN_HPP_
 
 #include <iostream>
 
-#include "win32_shared.hpp"
-#include "win32_close_handle.hpp"
-#include "win32_open_process.hpp"
-#include "win32_read_process_memory.hpp"
-#include "win32_find_window.hpp"
-#include "win32_get_window_thread_process_id.hpp"
+#include "shared.hpp"
+#include "close_handle.hpp"
+#include "open_process.hpp"
+#include "read_process_memory.hpp"
+#include "find_window.hpp"
+#include "get_window_thread_process_id.hpp"
 
 NAN_METHOD(NanWin32OpenProcess);
 NAN_METHOD(NanWin32OpenProcessSync);

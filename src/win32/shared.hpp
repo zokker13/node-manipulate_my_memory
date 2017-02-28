@@ -1,5 +1,5 @@
-#ifndef WIN32_SHARED_HPP_
-#define WIN32_SHARED_HPP_
+#ifndef SHARED_HPP_
+#define SHARED_HPP_
 
 #include <iostream>
 

@@ -6,22 +6,22 @@
             "OS=='win'", {
                 "targets": [
                     {
-                        "target_name": "ManipulateMyMemory",
+                        "target_name": "Win32ManipulateMyMemory",
                         "sources": [
-                            "src/main.cpp",
-                            "src/win32_close_handle.cpp",
-                            "src/win32_open_process.cpp",
-                            "src/win32_read_process_memory.cpp",
-                            "src/win32_find_window.cpp",
-                            "src/win32_get_window_thread_process_id.cpp",
-                            "src/win32_shared.cpp",
-                            "src/windows_extension.hpp",
-                            "src/win32_close_handle.hpp",
-                            "src/win32_open_process.hpp",
-                            "src/win32_read_process_memory.hpp",
-                            "src/win32_find_window.hpp",
-                            "src/win32_get_window_thread_process_id.hpp",
-                            "src/win32_shared.hpp",
+                            "src/win32/main.cpp",
+                            "src/win32/close_handle.cpp",
+                            "src/win32/open_process.cpp",
+                            "src/win32/read_process_memory.cpp",
+                            "src/win32/find_window.cpp",
+                            "src/win32/get_window_thread_process_id.cpp",
+                            "src/win32/shared.cpp",
+                            "src/win32/main.hpp",
+                            "src/win32/close_handle.hpp",
+                            "src/win32/open_process.hpp",
+                            "src/win32/read_process_memory.hpp",
+                            "src/win32/find_window.hpp",
+                            "src/win32/get_window_thread_process_id.hpp",
+                            "src/win32/shared.hpp",
                         ],
                         "include_dirs" : [
                             "<!(node -e \"require('nan')\")"

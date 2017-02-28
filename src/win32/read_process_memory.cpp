@@ -1,4 +1,4 @@
-#include "win32_read_process_memory.hpp"
+#include "read_process_memory.hpp"
 
 ReadProcessMemoryTransformation::ReadProcessMemoryTransformation()
 {

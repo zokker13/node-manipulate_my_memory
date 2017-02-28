@@ -1,4 +1,4 @@
-#include "win32_close_handle.hpp"
+#include "close_handle.hpp"
 
 CloseHandleTransformation::CloseHandleTransformation()
 {

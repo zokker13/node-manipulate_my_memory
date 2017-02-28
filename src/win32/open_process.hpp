@@ -1,7 +1,7 @@
-#ifndef WIN32_OPEN_PROCESS_HPP_
-#define WIN32_OPEN_PROCESS_HPP_
+#ifndef OPEN_PROCESS_HPP_
+#define OPEN_PROCESS_HPP_
 
-#include "win32_shared.hpp"
+#include "shared.hpp"
 
 struct OpTransformation
 {

@@ -1,7 +1,7 @@
-#ifndef WIN32_GET_WINDOW_THREAD_PROCESS_ID_HPP_
-#define WIN32_GET_WINDOW_THREAD_PROCESS_ID_HPP_
+#ifndef GET_WINDOW_THREAD_PROCESS_ID_HPP_
+#define GET_WINDOW_THREAD_PROCESS_ID_HPP_
 
-#include "win32_shared.hpp"
+#include "shared.hpp"
 
 struct GetWindowThreadProcessIdTransformation
 {

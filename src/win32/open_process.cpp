@@ -1,4 +1,4 @@
-#include "win32_open_process.hpp"
+#include "open_process.hpp"
 
 OpTransformation::OpTransformation()
 {
