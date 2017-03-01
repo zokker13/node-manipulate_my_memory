@@ -19,7 +19,8 @@
     "openprocess"
   ],
   "os": [
-    "win32"
+    "win32",
+    "linux"
   ],
   "author": "Philipp Tusch <zokker13@posteo.de>",
   "license": "MIT",

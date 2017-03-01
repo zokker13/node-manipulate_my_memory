@@ -33,8 +33,14 @@
             "OS=='linux'", {
                 "targets": [
                     {
-                        "target_name": "HelloWorld",
+                        "target_name": "LinuxManipulateMemory",
                         "sources": [
+                            "src/linux/main.cpp",
+                            "src/linux/main.hpp",
+                            "src/linux/process_vm_readv.cpp",
+                            "src/linux/process_vm_readv.hpp",
+                            "src/linux/shared.hpp",
+
                         ],
                         "include_dirs" : [
                             "<!(node -e \"require('nan')\")"
