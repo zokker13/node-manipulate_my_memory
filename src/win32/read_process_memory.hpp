@@ -7,7 +7,6 @@ struct ReadProcessMemoryTransformation
 {
   ReadProcessMemoryTransformation();
   ReadProcessMemoryTransformation(NAN_METHOD_ARGS_TYPE);
-  ~ReadProcessMemoryTransformation();
   void FromInfo(NAN_METHOD_ARGS_TYPE);
   void Exec();
   HANDLE hProcess;

@@ -15,16 +15,16 @@ ReadProcessMemoryTransformation::ReadProcessMemoryTransformation(NAN_METHOD_ARGS
   this->FromInfo(info);
 }
 
-ReadProcessMemoryTransformation::~ReadProcessMemoryTransformation()
-{
-  cout << "Free all the memory" << endl;
-  delete[] this->cpBuffer;
-}
-
-
 void ReadProcessMemoryTransformation::Exec()
 {
   this->bSuccess = ReadProcessMemory(this->hProcess, this->lpBaseAddress, this->cpBuffer, this->nSize, &this->uiNUmberOfBytesRead);
+
+  if (bSuccess == FALSE)
+  {
+    delete[] this->cpBuffer;
+    cout << "Feels Bad Man" << endl;
+  }
+    
 }
 
 void ReadProcessMemoryTransformation::FromInfo(NAN_METHOD_ARGS_TYPE info)
@@ -32,6 +32,9 @@ void ReadProcessMemoryTransformation::FromInfo(NAN_METHOD_ARGS_TYPE info)
   this->hProcess = reinterpret_cast<HANDLE>(info[0]->IntegerValue());
   this->lpBaseAddress = reinterpret_cast<LPCVOID>(info[1]->IntegerValue());
   this->nSize = static_cast<SIZE_T>(info[2]->IntegerValue());
+
+  // We do allocate this buffer but never delete it. 
+  // That is because the node GC takes care of it after we pass it to the Nan::NewBuffer
   this->cpBuffer = new char[this->nSize];
 }
 
@@ -49,20 +52,11 @@ void Win32ReadProcessMemory::Execute()
 
 void Win32ReadProcessMemory::HandleOKCallback()
 {
-  HandleScope scope;
-  v8::Isolate *isolate = v8::Isolate::GetCurrent();
-
-  Local<ArrayBuffer> buf = Local<ArrayBuffer>::New(isolate, ArrayBuffer::New(isolate, this->data.uiNUmberOfBytesRead));
-  Local<v8::Uint8Array> uarr = v8::Uint8Array::New(buf, 0, this->data.uiNUmberOfBytesRead);
-  for (int i = 0; i < 4; i++)
-  {
-    uarr->Set(i, v8::Integer::New(isolate, this->data.cpBuffer[i]));
-  }
+  Nan::MaybeLocal<Object> myBuf = Nan::NewBuffer(this->data.cpBuffer, this->data.uiNUmberOfBytesRead);
 
   Local<Value> argv[] = {
     Null()
-    , New<Boolean>(this->data.bSuccess)
-    , uarr
+    , myBuf.ToLocalChecked()
   };
 
   callback->Call(3, argv);
@@ -80,15 +74,7 @@ NAN_METHOD(NanWin32ReadProcessMemorySync)
   ReadProcessMemoryTransformation trans = ReadProcessMemoryTransformation(info);
   trans.Exec();
 
-  HandleScope scope;
-  v8::Isolate *isolate = v8::Isolate::GetCurrent();
+  Nan::MaybeLocal<Object> myBuf = Nan::NewBuffer(trans.cpBuffer, trans.uiNUmberOfBytesRead);
 
-  Local<ArrayBuffer> buf = Local<ArrayBuffer>::New(isolate, ArrayBuffer::New(isolate, trans.uiNUmberOfBytesRead));
-  Local<v8::Uint8Array> uarr = v8::Uint8Array::New(buf, 0, trans.uiNUmberOfBytesRead);
-  for (int i = 0; i < 4; i++)
-  {
-    uarr->Set(i, v8::Integer::New(isolate, trans.cpBuffer[i]));
-  }
-
-  info.GetReturnValue().Set(uarr);
+  info.GetReturnValue().Set(myBuf.ToLocalChecked());
 }
