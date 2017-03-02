@@ -7,6 +7,7 @@
 #include "close_handle.hpp"
 #include "open_process.hpp"
 #include "read_process_memory.hpp"
+#include "write_process_memory.hpp"
 #include "find_window.hpp"
 #include "get_window_thread_process_id.hpp"
 
@@ -16,6 +17,8 @@ NAN_METHOD(NanWin32CloseHandle);
 NAN_METHOD(NanWin32CloseHandleSync);
 NAN_METHOD(NanWin32ReadProcessMemory);
 NAN_METHOD(NanWin32ReadProcessMemorySync);
+NAN_METHOD(NanWin32WriteProcessMemory);
+NAN_METHOD(NanWin32WriteProcessMemorySync);
 NAN_METHOD(NanWin32FindWindow);
 NAN_METHOD(NanWin32FindWindowSync);
 NAN_METHOD(NanWin32GetWindowThreadProcessId);

@@ -2,16 +2,24 @@ const util = require('util');
 
 const win32 = require('./../lib/win32');
 
-const handle = win32.openProcessSync(win32.PROCESS_ACCESS_RIGHTS.PROCESS_VM_READ, false, 6692);
-win32.readProcessMemory(handle, 0x14fb04, 4, (err, buf) => {
+const handle = win32.openProcessSync(
+  win32.PROCESS_ACCESS_RIGHTS.PROCESS_VM_OPERATION
+  | win32.PROCESS_ACCESS_RIGHTS.PROCESS_VM_WRITE
+  , false
+  , 7648
+);
 
-  if (!err) {
-    console.log(buf);
-    console.log(buf.length);
-    console.log(buf.readInt32LE(0));
-  } else {
-    console.log('Shit: ', err);
-  }
 
+setInterval(() => {
+  const myNum = Buffer.allocUnsafe(4);
+  const numToWrite = parseInt(Math.random() * 200);
+  myNum.writeInt32LE(numToWrite);
+  win32.writeProcessMemorySync(handle, 0x30fc68, 4, myNum);
+
+}, 100);
+
+process.on('SIGINT', () => {
+  console.log('bye');
   win32.closeHandleSync(handle);
+  process.exit(0);
 });
