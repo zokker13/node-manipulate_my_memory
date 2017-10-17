@@ -59,7 +59,7 @@ void Win32ReadProcessMemory::HandleOKCallback()
     , myBuf.ToLocalChecked()
   };
 
-  callback->Call(3, argv);
+  callback->Call(2, argv);
 }
 
 NAN_METHOD(NanWin32ReadProcessMemory)

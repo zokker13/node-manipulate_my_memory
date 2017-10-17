@@ -20,7 +20,8 @@ void WriteProcessMemoryTransformation::Exec()
   this->bSuccess = WriteProcessMemory(this->hProcess, this->lpBaseAddress, this->cpBuffer, this->nSize, &this->uiNUmberOfBytesWritten);
   
   if (!bSuccess)
-    cerr << "FAIL: WriteProcessMemory" << endl;
+    
+    cerr << "FAIL: WriteProcessMemory. GetLastError: " << GetLastError() << endl;
 }
 
 void WriteProcessMemoryTransformation::FromInfo(NAN_METHOD_ARGS_TYPE info)
