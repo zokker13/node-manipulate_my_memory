@@ -18,8 +18,6 @@ return mmm.findWindow(null, 'AssaultCube')
 
     return mmm.openProcess(
       ManipulateMyMemory.processAccessRights.PROCESS_VM_READ
-      | ManipulateMyMemory.processAccessRights.PROCESS_VM_OPERATION
-      | ManipulateMyMemory.processAccessRights.PROCESS_VM_WRITE
       , false
       , ids.processId);
   })

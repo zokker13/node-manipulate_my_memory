@@ -15,16 +15,17 @@ struct WriteProcessMemoryTransformation
   SIZE_T nSize;
   unsigned __int64 uiNUmberOfBytesWritten;
   BOOL bSuccess;
+  LPCTSTR errorMessage;
 };
-
-
 
 class Win32WriteProcessMemory : public AsyncWorker
 {
 public:
   Win32WriteProcessMemory(Callback* callback, NAN_METHOD_ARGS_TYPE info);
   void Execute();
-  void HandleOKCallback();
+
+protected: 
+  virtual void HandleOKCallback();
 
 private:
   WriteProcessMemoryTransformation data;

@@ -8,6 +8,7 @@ WriteProcessMemoryTransformation::WriteProcessMemoryTransformation()
   this->lpBaseAddress = nullptr;
   this->nSize = 0;
   this->uiNUmberOfBytesWritten = 0;
+  this->errorMessage = "";
 }
 
 WriteProcessMemoryTransformation::WriteProcessMemoryTransformation(NAN_METHOD_ARGS_TYPE info)
@@ -20,8 +21,10 @@ void WriteProcessMemoryTransformation::Exec()
   this->bSuccess = WriteProcessMemory(this->hProcess, this->lpBaseAddress, this->cpBuffer, this->nSize, &this->uiNUmberOfBytesWritten);
   
   if (!bSuccess)
-    
-    cerr << "FAIL: WriteProcessMemory. GetLastError: " << GetLastError() << endl;
+  {
+    LPCSTR errMsg = GetLastErrorDescription(TEXT("WriteProcessMemory"));
+    throw errMsg;
+  }
 }
 
 void WriteProcessMemoryTransformation::FromInfo(NAN_METHOD_ARGS_TYPE info)
@@ -42,12 +45,20 @@ Win32WriteProcessMemory::Win32WriteProcessMemory(Callback* callback, NAN_METHOD_
 
 void Win32WriteProcessMemory::Execute()
 {
-  this->data.Exec();
+  try 
+  {
+    this->data.Exec();
+  }
+  catch (LPCSTR err) 
+  {
+    this->SetErrorMessage(err);
+  }
 }
 
 void Win32WriteProcessMemory::HandleOKCallback()
 {
   Local<Number> tempNumber = New<Uint32>(static_cast<unsigned int>(this->data.uiNUmberOfBytesWritten));
+
 
   Local<Value> argv[] = {
     Null()

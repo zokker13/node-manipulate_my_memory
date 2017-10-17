@@ -6,6 +6,7 @@
 #include <nan.h>
 
 #include <Windows.h>
+#include <strsafe.h>
 
 using namespace std;
 
@@ -26,5 +27,7 @@ using Nan::HandleScope;
 using Nan::New;
 using Nan::Null;
 using Nan::To;
+
+LPCTSTR GetLastErrorDescription(LPTSTR lpszFunction);
 
 #endif
