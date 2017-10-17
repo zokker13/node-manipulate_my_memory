@@ -33,6 +33,5 @@
     "bindings": "^1.3.0",
     "nan": "^2.7.0"
   },
-  "gypfile": true,
-  "typings": "dist/types"
+  "gypfile": true
 }
