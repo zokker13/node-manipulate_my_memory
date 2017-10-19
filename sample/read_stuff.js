@@ -1,38 +1,27 @@
-const ManipulateMyMemory = require('./../lib/win32/mmm');
-const mmm = new ManipulateMyMemory();
+const ManipulateMyMemory = require('./../lib');
+const mmm = new ManipulateMyMemory('ac_client.exe');
 
-const AMMO_ADDR = 0x00E7A608;
+const AMMO_ADDR = 0x0284A608;
 
-return mmm.findWindow(null, 'AssaultCube')
-  .then((handle) => {
-    
-    if (!handle) {
-      console.log('Couldnt find window. Bye');
-    }
-
-    return mmm.getWindowThreadProcessId(handle);
-    
-  })
-  .then((ids) => {
-    console.log('ids', ids);
-
-    return mmm.openProcess(
-      ManipulateMyMemory.processAccessRights.PROCESS_VM_READ
-      , false
-      , ids.processId);
-  })
-  .then((openHandle) => {
-
-    console.log('The handle:', openHandle);
-    
-    if (!openHandle) {
-      console.log('couldnt get handle.');
-    }
-
-    return mmm.readInt32(AMMO_ADDR, openHandle);
-  })
-  .then((number) => {
-    console.log('my number', number);
-
-    return mmm.writeInt32(AMMO_ADDR, 1337)
-  });
+mmm.selectProcess(
+  ManipulateMyMemory.winProcessAccessRights.PROCESS_VM_READ
+  | ManipulateMyMemory.winProcessAccessRights.PROCESS_VM_OPERATION
+  | ManipulateMyMemory.winProcessAccessRights.PROCESS_VM_WRITE
+  , false
+)
+.then((handle) => {
+  console.log('Handle:', handle.toString('16'));
+  return mmm.readInt32(AMMO_ADDR);
+})
+.then((val) => {
+  console.log('Read:', val);
+  return mmm.writeInt32(AMMO_ADDR, val * 2);
+})
+.then(() => {
+  console.log('Written now');
+  return mmm.readInt32(AMMO_ADDR);
+})
+.then((val) => {
+  console.log('Value now:', val);
+  return mmm.unselectProcess();
+});
