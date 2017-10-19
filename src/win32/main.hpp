@@ -10,6 +10,7 @@
 #include "write_process_memory.hpp"
 #include "find_window.hpp"
 #include "get_window_thread_process_id.hpp"
+#include "list_processes_and_modules.hpp"
 
 NAN_METHOD(NanWin32OpenProcess);
 NAN_METHOD(NanWin32OpenProcessSync);
@@ -23,5 +24,7 @@ NAN_METHOD(NanWin32FindWindow);
 NAN_METHOD(NanWin32FindWindowSync);
 NAN_METHOD(NanWin32GetWindowThreadProcessId);
 NAN_METHOD(NanWin32GetWindowThreadProcessIdSync);
+NAN_METHOD(NanWin32ListProcessesAndModules);
+NAN_METHOD(NanWin32ListProcessesAndModulesSync);
 
 #endif
