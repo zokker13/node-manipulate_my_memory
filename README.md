@@ -10,7 +10,7 @@ Cross platform memory manipulation
 * Docs [JS]
 * tests [JS]
 * Hacking example [JS]
-* List processes [C++]
+* [x] List processes [C++]
 * [x] Get process by string [C++]
 * Report internal errors [C++]
 * Proper error handling [JS]
