@@ -37,5 +37,10 @@
     "process-list": "^1.2.1",
     "underscore": "^1.8.3"
   },
-  "gypfile": true
+  "gypfile": true,
+  "devDependencies": {
+    "@types/bluebird": "^3.5.17",
+    "@types/node": "^8.0.47",
+    "@types/underscore": "^1.8.3"
+  }
 }
