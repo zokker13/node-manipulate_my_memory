@@ -2,7 +2,7 @@
 Cross platform memory manipulation
 
 ## Todo
-* Pattern Scan [JS/C++ for performance?]
+* [ ] Pattern Scan [JS/C++ for performance?]
 * [x] Pointer following [JS]
 * [x] Monitor address [JS + C++]
 * [ ] 64bit integers (probably impossible in js) [JS]
