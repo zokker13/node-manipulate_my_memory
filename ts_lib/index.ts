@@ -1,0 +1,1 @@
+export { MMM, MMMWin32 } from './mmm';

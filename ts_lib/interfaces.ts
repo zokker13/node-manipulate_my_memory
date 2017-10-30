@@ -1,13 +1,14 @@
 import { EProcessAccessRights } from './enums';
 
-export interface IManipulateMyMemory {
-  selectProcess(access: EProcessAccessRights, inheritBoolean: boolean, processName: string): any;
+export interface ILowLevelMMM {
+  selectProcess(access: EProcessAccessRights, inheritHandle: boolean, processName: string): Promise<any>;
   unselectProcess(openHandle: Number): Promise<boolean>;
   //findWindow(className: string|null, windowName: string|null): Promise<number>;
   read(address: number, size: number, openHandle: number): Promise<Buffer>;
   write(address: number, size: number, value: Buffer, openHandle: number): Promise<number>;
   pointerAddress(address: number, pointers: Array<number>, size: number, openHandle: number): Promise<number>;
-  monitor(interval: number, inputFunc: IReadFunction, hooIHookFunctionkFunc: Function): void;
+  monitor(interval: number, inputFunc: IReadFunction, hooIHookFunctionkFunc: IHookFunction): void;
+  listProcesses(): Promise<Array<IProcessStructure>>
  
   /* stupid
   readInt8(address: number, openHandle: number): Promise<number>;
@@ -26,3 +27,8 @@ export interface IReadFunction {
 export interface IHookFunction {
   (output: any): void;
 };
+
+export interface IProcessStructure {
+  processName: string,
+  pid: number,
+}

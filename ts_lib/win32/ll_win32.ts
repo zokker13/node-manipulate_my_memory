@@ -5,15 +5,16 @@ import * as Debug from 'debug';
 
 import { EProcessAccessRights } from './../enums';
 import { 
-  IManipulateMyMemory
+  ILowLevelMMM
   , IHookFunction
-  , IReadFunction } from './../interfaces';
+  , IReadFunction, 
+  IProcessStructure} from './../interfaces';
 
 const debug = Debug('manipulate_my_memory:win32:manipulate_my_memory');
 
 import Raw from './raw';
 
-class ManipulateMyMemoryWin32 implements IManipulateMyMemory {
+export default class LLWin32 implements ILowLevelMMM {
 
   private openHandle: number;
   constructor(private processName: string) {
@@ -33,6 +34,24 @@ class ManipulateMyMemoryWin32 implements IManipulateMyMemory {
     if (!_.isString(processName)) {
       return Promise.reject(new TypeError('Parameter "processName" must be of type "integer"'));
     }
+
+    const procs = await this.listProcesses();
+    console.log(`Got ${procs.length} procs`);
+    const proc = _.find(procs, (proc) => {
+      return proc.processName === processName;
+    });
+
+    if (!proc) {
+      return Promise.reject(new TypeError(`Process "${processName}" not found.`));
+    }
+
+    const handle = await Raw.openProcess(access, inheritHandle, proc.pid);
+    if (!handle) {
+      return Promise.reject(new Error(`Could not open the handle`));
+    }
+
+    this.openHandle = handle;
+    return handle;
   }
 
   async unselectProcess(openHandle: number = this.openHandle) {
@@ -93,6 +112,23 @@ class ManipulateMyMemoryWin32 implements IManipulateMyMemory {
         previousValue = val;
       }
     }, interval);
+  }
+
+  async listProcesses(): Promise<Array<IProcessStructure>> {
+    const entries = await Raw.listProcessesAndModules();
+    const properEntires: Array<IProcessStructure> = _.map<IProcessStructure, any>(entries, (entry: any) => {
+      const desiredValue: IProcessStructure = {
+        pid: 0,
+        processName: '',
+      };
+
+      desiredValue.processName = entry.exeFile;
+      desiredValue.pid = entry.pid;
+
+      return desiredValue;
+    });
+
+    return properEntires;
   }
 
 }
