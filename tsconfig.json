@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
     "module": "commonjs",
+    "moduleResolution": "classic",
     "noImplicitAny": true,
     "sourceMap": true,
     "outDir": "dist/commonjs",
     "declarationDir": "dist/declarations",
     "declaration": true,
     "alwaysStrict": true,
-    "target": "ES6"
+    "target": "ES2017"
   }, 
   "include": [
     "ts_lib/*",

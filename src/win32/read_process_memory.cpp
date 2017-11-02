@@ -22,7 +22,8 @@ void ReadProcessMemoryTransformation::Exec()
   if (bSuccess == FALSE)
   {
     delete[] this->cpBuffer;
-    cout << "Feels Bad Man" << endl;
+    LPCSTR errMsg = GetLastErrorDescription(TEXT("ReadProcessMemory"));
+    throw errMsg;
   }
     
 }
@@ -32,6 +33,10 @@ void ReadProcessMemoryTransformation::FromInfo(NAN_METHOD_ARGS_TYPE info)
   this->hProcess = reinterpret_cast<HANDLE>(info[0]->IntegerValue());
   this->lpBaseAddress = reinterpret_cast<LPCVOID>(info[1]->IntegerValue());
   this->nSize = static_cast<SIZE_T>(info[2]->IntegerValue());
+  
+  cout << "handle: " << this->hProcess << endl;
+  cout << "lpBaseAddress: " << this->lpBaseAddress << endl;
+  cout << "nSize: " << this->nSize << endl;
 
   // We do allocate this buffer but never delete it. 
   // That is because the node GC takes care of it after we pass it to the Nan::NewBuffer
@@ -47,7 +52,14 @@ Win32ReadProcessMemory::Win32ReadProcessMemory(Callback* callback, NAN_METHOD_AR
 
 void Win32ReadProcessMemory::Execute()
 {
-  this->data.Exec();
+  try 
+  {
+    this->data.Exec();
+  }
+  catch(LPCSTR err)
+  {
+    this->SetErrorMessage(err);
+  }
 }
 
 void Win32ReadProcessMemory::HandleOKCallback()

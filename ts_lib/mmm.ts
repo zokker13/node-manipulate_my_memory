@@ -11,7 +11,7 @@ export class MMM<T extends LLWin32> implements ILowLevelMMM {
   async selectProcess(
     access: EProcessAccessRights
     , inheritHandle: boolean
-    , processName: string
+    , processName?: string
   ): Promise<any> {
     return this.concreteInstance.selectProcess(access, inheritHandle, processName);
   }
@@ -34,7 +34,7 @@ export class MMM<T extends LLWin32> implements ILowLevelMMM {
     return this.concreteInstance.write(address, size, value, openHandle);
   }
 
-  async pointerAddress(address: number, pointers: Array<number>, size: number, openHandle: number): Promise<number> {
+  async pointerAddress(address: number, pointers: Array<number>, size: number, openHandle?: number): Promise<number> {
     return this.concreteInstance.pointerAddress(address, pointers, size, openHandle);
   }
 

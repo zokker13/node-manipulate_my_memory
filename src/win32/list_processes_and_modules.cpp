@@ -88,7 +88,7 @@ void ListProcessesAndModulesTransformation::GetProcessList()
     HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pe32.th32ProcessID);
     if (hProcess == NULL) 
     {
-      cout << "ERR: Could not open process" << endl;
+      // cout << "ERR: Could not open process" << endl;
     } 
     else 
     {
@@ -124,8 +124,8 @@ void ListProcessesAndModulesTransformation::GetProcessModules(DWORD dwPid, Proce
 
   if (hModuleSnap == INVALID_HANDLE_VALUE)
   {
-    PrintError(TEXT("CreateToolhelp32Snapshot"));
-    cout << "ERR: Could not take snapshot of module with pid" << dwPid << endl;
+    // PrintError(TEXT("CreateToolhelp32Snapshot"));
+    // cout << "ERR: Could not take snapshot of module with pid" << dwPid << endl;
     return;
   }
 

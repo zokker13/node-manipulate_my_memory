@@ -30,6 +30,7 @@
   "homepage": "https://github.com/zokker13/node-manipulate_my_memory#readme",
   "dependencies": {
     "async": "^2.5.0",
+    "big-integer": "^1.6.25",
     "bindings": "^1.3.0",
     "bluebird": "^3.5.1",
     "debug": "^3.1.0",
@@ -39,9 +40,9 @@
   },
   "gypfile": true,
   "devDependencies": {
-    "@types/bluebird": "^3.5.17",
+    "@types/bluebird": "^3.5.18",
     "@types/debug": "0.0.30",
     "@types/node": "^8.0.47",
-    "@types/underscore": "^1.8.3"
+    "@types/underscore": "^1.8.4"
   }
 }

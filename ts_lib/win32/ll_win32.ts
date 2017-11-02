@@ -3,6 +3,13 @@ import * as os from 'os';
 import * as _ from 'underscore';
 import * as Debug from 'debug';
 
+import * as bigInt from 'big-integer'
+
+
+// FUCKING STUPID ASS LIBRARY FUCK YOU
+const bigInt = require('big-integer');
+
+
 import { EProcessAccessRights } from './../enums';
 import { 
   ILowLevelMMM
@@ -22,7 +29,7 @@ export default class LLWin32 implements ILowLevelMMM {
   }
 
   async selectProcess(access: EProcessAccessRights, inheritHandle: boolean, processName: string = this.processName) {
-    
+ 
     if (!Number.isInteger(access)) {
       return Promise.reject(new TypeError('Parameter "access" must be of type "integer"'));
     }
@@ -32,7 +39,7 @@ export default class LLWin32 implements ILowLevelMMM {
     }
 
     if (!_.isString(processName)) {
-      return Promise.reject(new TypeError('Parameter "processName" must be of type "integer"'));
+      return Promise.reject(new TypeError('Parameter "processName" must be of type "string"'));
     }
 
     const procs = await this.listProcesses();
@@ -68,7 +75,7 @@ export default class LLWin32 implements ILowLevelMMM {
     , size: number
     , openHandle: number = this.openHandle
   ) {
-    return Raw.readProcessMemory(address, size, openHandle);
+    return await Raw.readProcessMemory(openHandle, address, size);
   }
 
   async write(
@@ -87,7 +94,8 @@ export default class LLWin32 implements ILowLevelMMM {
     , openHandle: number = this.openHandle
   ): Promise<number> {
     const subAddress = await this.read(address, size, openHandle)
-    debug(`Found a potential address: 0x${subAddress.readInt32LE(0).toString(16)}`);
+    
+    //debug(`Found a potential address: 0x${subAddress.readUInt64LE(0).toString(16)}`);
 
     if (!pointers.length) {
       debug(`No more pointers to follow. Choosing 0x${address.toString(16)} as desired address`);
@@ -95,8 +103,11 @@ export default class LLWin32 implements ILowLevelMMM {
     }
 
     const offset = pointers.shift();
+    debug(`Checkout out offset "${offset.toString(16)}"`);
 
-    return await this.pointerAddress(subAddress.readInt32LE(0) + offset, pointers, size, openHandle);
+    debug(subAddress.readUInt32LE(0) + offset);
+
+    return await this.pointerAddress(subAddress.readUInt32LE(0) + offset, pointers, size, openHandle);
   }
 
   monitor(interval: number, readFunc: IReadFunction, hookFunc: IHookFunction) {
