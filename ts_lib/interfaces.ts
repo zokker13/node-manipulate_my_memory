@@ -1,12 +1,13 @@
 import { EProcessAccessRights } from './enums';
+import { BigInteger } from 'big-integer';
 
 export interface ILowLevelMMM {
   selectProcess(access: EProcessAccessRights, inheritHandle: boolean, processName: string): Promise<any>;
   unselectProcess(openHandle: Number): Promise<boolean>;
   //findWindow(className: string|null, windowName: string|null): Promise<number>;
-  read(address: number, size: number, openHandle: number): Promise<Buffer>;
-  write(address: number, size: number, value: Buffer, openHandle: number): Promise<number>;
-  pointerAddress(address: number, pointers: Array<number>, size: number, openHandle: number): Promise<number>;
+  read(address: BigInteger, size: number, openHandle: number): Promise<Buffer>;
+  write(address: BigInteger, size: number, value: Buffer, openHandle: number): Promise<number>;
+  pointerAddress(address: BigInteger, pointers: Array<BigInteger>, size: number, openHandle: number): Promise<BigInteger>;
   monitor(interval: number, inputFunc: IReadFunction, hooIHookFunctionkFunc: IHookFunction): void;
   listProcesses(): Promise<Array<IProcessStructure>>
  

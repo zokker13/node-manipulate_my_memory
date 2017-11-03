@@ -1,5 +1,6 @@
 import * as _ from 'underscore';
 import * as BPromise from 'bluebird';
+import { BigInteger } from 'big-integer';
 
 const mmm = require('bindings')('Win32ManipulateMyMemory');
 
@@ -8,8 +9,8 @@ const getWindowThreadProcessId = BPromise.promisify<number, number>(mmm.getWindo
 const findWindow = BPromise.promisify<number, String, String>(mmm.findWindow);
 const openProcess = BPromise.promisify<number, number, boolean, number>(mmm.openProcess);
 const listProcessesAndModules = BPromise.promisify<Array<any>>(mmm.listProcessesAndModules);
-const readProcessMemory = BPromise.promisify<Buffer, number, number, number>(mmm.readProcessMemory);
-const writeProcessMemory = BPromise.promisify<number, number, number, number, Buffer>(mmm.writeProcessMemory);
+const readProcessMemory = BPromise.promisify<Buffer, number, BigInteger, number>(mmm.readProcessMemory);
+const writeProcessMemory = BPromise.promisify<number, number, BigInteger, number, Buffer>(mmm.writeProcessMemory);
 
 const Raw = {
   closeHandle

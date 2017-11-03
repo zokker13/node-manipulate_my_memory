@@ -1,3 +1,5 @@
+import { BigInteger, BigNumber } from 'big-integer';
+
 import { ILowLevelMMM, IReadFunction, IHookFunction, IProcessStructure } from './interfaces';
 import { EProcessAccessRights } from './enums';
 
@@ -26,15 +28,15 @@ export class MMM<T extends LLWin32> implements ILowLevelMMM {
     return this.concreteInstance.listProcesses();
   }
 
-  async read(address: number, size: number, openHandle: number) {
+  async read(address: BigInteger, size: number, openHandle: number) {
     return this.concreteInstance.read(address, size, openHandle);
   }
 
-  async write(address: number, size: number, value: Buffer, openHandle: number): Promise<number> {
+  async write(address: BigInteger, size: number, value: Buffer, openHandle: number): Promise<number> {
     return this.concreteInstance.write(address, size, value, openHandle);
   }
 
-  async pointerAddress(address: number, pointers: Array<number>, size: number, openHandle?: number): Promise<number> {
+  async pointerAddress(address: BigInteger, pointers: Array<BigInteger>, size: number, openHandle?: number): Promise<BigInteger> {
     return this.concreteInstance.pointerAddress(address, pointers, size, openHandle);
   }
 
@@ -42,7 +44,7 @@ export class MMM<T extends LLWin32> implements ILowLevelMMM {
     return this.concreteInstance.monitor(interval, inputFunc, hookFunc);
   }
 
-  async readInt32(address: number, openHandle: number) {
+  async readInt32(address: BigInteger, openHandle: number) {
     return this.read(address, 4, openHandle);
   }
 

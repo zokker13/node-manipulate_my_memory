@@ -3,7 +3,9 @@ import * as os from 'os';
 import * as _ from 'underscore';
 import * as Debug from 'debug';
 
+import { BigInteger, BigNumber } from 'big-integer';
 import * as bigInt from 'big-integer';
+
 
 import { EProcessAccessRights } from './../enums';
 import { 
@@ -66,7 +68,7 @@ export default class LLWin32 implements ILowLevelMMM {
   }
 
   async read(
-    address: number
+    address: BigInteger
     , size: number
     , openHandle: number = this.openHandle
   ) {
@@ -74,7 +76,7 @@ export default class LLWin32 implements ILowLevelMMM {
   }
 
   async write(
-    address: number
+    address: BigInteger
     , size: number
     , value: Buffer
     , openHandle: number = this.openHandle
@@ -83,15 +85,24 @@ export default class LLWin32 implements ILowLevelMMM {
   }
 
   async pointerAddress(
-    address: number
-    , pointers: Array<number>
+    address: BigInteger
+    , pointers: Array<BigInteger>
     , size: number = 4
     , openHandle: number = this.openHandle
-  ): Promise<number> {
+  ): Promise<BigInteger> {
     const subAddress = await this.read(address, size, openHandle)
     
-    //debug(`Found a potential address: 0x${subAddress.readUInt64LE(0).toString(16)}`);
+    debug(`Byte representation of "0x${address.toString(16)}": 0x${subAddress.toString('hex')} (${subAddress.length})`);
 
+    // Big Endian? 
+    const entries: number[] = [];
+    for (const add of subAddress.values()) {
+      entries.unshift(add);
+    }
+
+    const numericAddress = bigInt.fromArray(entries, 256, false);
+    debug(`Potential Address: 0x${numericAddress.toString(16)}`);
+    
     if (!pointers.length) {
       debug(`No more pointers to follow. Choosing 0x${address.toString(16)} as desired address`);
       return address;
@@ -100,9 +111,7 @@ export default class LLWin32 implements ILowLevelMMM {
     const offset = pointers.shift();
     debug(`Checkout out offset "${offset.toString(16)}"`);
 
-    debug(subAddress.readUInt32LE(0) + offset);
-
-    return await this.pointerAddress(subAddress.readUInt32LE(0) + offset, pointers, size, openHandle);
+    return await this.pointerAddress(numericAddress.add(offset), pointers, size, openHandle);
   }
 
   monitor(interval: number, readFunc: IReadFunction, hookFunc: IHookFunction) {
