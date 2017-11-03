@@ -3,12 +3,7 @@ import * as os from 'os';
 import * as _ from 'underscore';
 import * as Debug from 'debug';
 
-import * as bigInt from 'big-integer'
-
-
-// FUCKING STUPID ASS LIBRARY FUCK YOU
-const bigInt = require('big-integer');
-
+import * as bigInt from 'big-integer';
 
 import { EProcessAccessRights } from './../enums';
 import { 
